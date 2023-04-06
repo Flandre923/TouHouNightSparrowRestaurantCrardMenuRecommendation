@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>东方夜雀食堂菜谱推荐</title>
+
+    <style>
+        #app {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background-color: #F5F5F5; /* 设置背景颜色 */
+          border: 2px solid #BEBEBE; /* 设置边框 */
+          border-radius: 10px; /* 设置边框圆角 */
+          padding: 20px; /* 设置内边距 */
+          margin: auto; /* 设置居中 */
+          max-width: 800px; /* 设置最大宽度 */
+          /*background-image: url('花纹图片地址');  设置背景图片 */
+          background-color: antiquewhite;
+
+        }
+        </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="form-group">
+            <label for="display-select">选择顾客对象:</label>
+            <select class="form-control" id="display-select" v-model="selectedContent" @change="updateSelectedContent">
+                <option value="">--Please choose an option--</option>
+                <option v-for="content in personInfo.personInfo" :key="content.name" :value="content.name">
+                    {{content['name']}}</option>
+            </select>
+        </div>
+        <!-- 根据之前的option选择的内容对div的内容进行显示 -->
+        <div>
+            <h1>{{currentPerson.name}}</h1>
+            <ul>
+                <li><strong>名字：</strong>{{currentPerson.name}}</li>
+                <li><strong>奖励卡：</strong>{{currentPerson.card.reward}}</li>
+                <li><strong>惩罚卡：</strong>{{currentPerson.card.punishment}}</li>
+                <li><strong>价格范围：</strong>{{currentPerson.money}}</li>
+                <li><strong>常出现地点：</strong>{{currentPerson.frequent_occurrence}}</li>
+                <li><strong>喜欢的口味：</strong>{{currentPerson.like}}</li>
+                <li><strong>不喜欢的口味：</strong>{{currentPerson.unlike}}</li>
+                <li><strong>喜欢的酒：</strong>{{currentPerson.likewine}}</li>
+            </ul>
+
+            <h2>推荐开卡菜单</h2>
+            <ul>
+                <li v-for="m,v in currentPerson.menu"><strong>{{v}}:  </strong>{{m}}</li>
+            </ul>
+
+            <h2>推荐酒</h2>
+            <ul>
+                <li v-for="k,v in currentPerson.wine"><strong>{{v}}:  </strong>{{k}}</li>
+            </ul>
+
+            <h2>羁绊解锁礼物</h2>
+            <ul>
+                <li v-for="k,v in currentPerson.unlock">{{v}}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Import Vue.js and Bootstrap JS -->
+    <script src="./vue.js"></script>
+    <script src="./info.js"></script>
+    <script>
+        const app = Vue.createApp({
+            // 数据
+            data() {
+                return {
+                    myId: 1,
+                    selectedContent: "",
+                    personInfo: "",
+                    currentPerson: null,
+                };
+            },
+            methods: {
+                updateSelectedContent() {
+                    // 在personInfo数组中找到关于当前this.selectedContent的对象,并帮该对象的内容绑定到currentPerson的数据中
+                    this.currentPerson = this.personInfo.personInfo.find(item => item.name === this.selectedContent);
+                }
+            },
+
+            mounted() {
+            },
+
+            created() {
+                this.personInfo = personInfo;
+                this.currentPerson = this.personInfo.personInfo[0]
+                console.log(this.currentPerson)
+                console.log(this.personInfo.personInfo[0].name);
+            },
+
+            computed: {
+
+            },
+
+
+
+        });
+        app.mount("#app");
+    </script>
+</body>
+
+</html>
